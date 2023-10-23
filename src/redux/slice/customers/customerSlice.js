@@ -104,7 +104,6 @@ const customerSlice = createSlice({
     //login
     builder
       .addCase(loginCustomerAction.pending, (state) => {
-        state.isAuthenticated = true;
         state.loading = true;
         state.error = null;
         state.success = null;
@@ -112,6 +111,7 @@ const customerSlice = createSlice({
 
       .addCase(loginCustomerAction.fulfilled, (state, action) => {
         state.customerAuth.customerInfo = action.payload;
+        state.isAuthenticated = true;
         state.loading = false;
         state.success = "Login successful!";
         state.error = null;
@@ -120,6 +120,7 @@ const customerSlice = createSlice({
       .addCase(loginCustomerAction.rejected, (state, action) => {
         state.error =
           action.payload?.error || action.payload || "An error occurred";
+          state.isAuthenticated = false;
         state.loading = false;
         state.success = null;
       });

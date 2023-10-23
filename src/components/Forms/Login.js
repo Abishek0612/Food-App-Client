@@ -25,15 +25,16 @@ const Login = () => {
 
   useEffect(() => {
     if (customerAuth.customerInfo) {
+      toast.success("Customer Login Successful");
       navigate("/");
-      toast.success("Login Successful")
     } else if (restaurantAuth.restaurantInfo) {
+      toast.success("Restaurant Login Successful");
       navigate(`/restaurantDashboard/${restaurantAuth.restaurantInfo._id}`);
-      toast.success("Login Successful");
-    } else if(error){
-      toast.error(error); 
+    } else if (error) {
+      toast.error(error);
     }
   }, [customerAuth, restaurantAuth, navigate, error]);
+  
 
   const handleLogin = (e) => {
     e.preventDefault();
