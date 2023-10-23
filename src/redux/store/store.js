@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import restaurantReducer from "../slice/restaurant/restaurantSlice";
 import customerReducer from "../slice/customers/customerSlice";
 import foodProductReducer from "../slice/foodProducts/foodProductsSlice";
+import orderReducer from "../slice/orders/ordersSlice";
 
 //create a store
 const store = configureStore({
@@ -9,6 +10,7 @@ const store = configureStore({
     restaurants: restaurantReducer,
     customers: customerReducer,
     foodProducts: foodProductReducer,
+    orders:orderReducer
   },
 
 });

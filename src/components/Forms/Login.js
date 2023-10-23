@@ -29,7 +29,8 @@ const Login = () => {
       navigate("/");
     } else if (restaurantAuth.restaurantInfo) {
       toast.success("Restaurant Login Successful");
-      navigate(`/restaurantDashboard/${restaurantAuth.restaurantInfo._id}`);
+      navigate(`/restaurantDashboard/${restaurantAuth.restaurantInfo.restaurantId}`);
+    
     } else if (error) {
       toast.error(error);
     }

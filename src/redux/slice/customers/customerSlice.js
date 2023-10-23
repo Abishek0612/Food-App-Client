@@ -120,7 +120,7 @@ const customerSlice = createSlice({
       .addCase(loginCustomerAction.rejected, (state, action) => {
         state.error =
           action.payload?.error || action.payload || "An error occurred";
-          state.isAuthenticated = false;
+        state.isAuthenticated = false;
         state.loading = false;
         state.success = null;
       });
@@ -129,4 +129,5 @@ const customerSlice = createSlice({
 const customerReducer = customerSlice.reducer;
 
 export default customerReducer;
-export const { logoutCustomer, clearToastNotifications } = customerSlice.actions;
+export const { logoutCustomer, clearToastNotifications } =
+  customerSlice.actions;

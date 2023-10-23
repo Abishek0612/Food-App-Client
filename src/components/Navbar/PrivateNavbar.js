@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -7,7 +7,6 @@ import { logoutRestaurant } from "../../redux/slice/restaurant/restaurantSlice";
 
 function PrivateNavbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const navRef = useRef(null); // reference to the nav element
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -26,67 +25,66 @@ function PrivateNavbar() {
     } else if (isRestaurantAuthenticated) {
       localStorage.removeItem("restaurantInfo");
       dispatch(logoutRestaurant());
+      navigate("/");
     }
   };
-
-  // Close the navbar if clicked outside
-  const handleClickOutside = (event) => {
-    if (navRef.current && !navRef.current.contains(event.target)) {
-      setIsOpen(false);
-    }
-  };
-
-  // Add and remove the event listener based on the navbar's open state
-  useEffect(() => {
-    if (isOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
-    } else {
-      document.removeEventListener("mousedown", handleClickOutside);
-    }
-
-    // Cleanup the event listener on component unmount
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [isOpen]);
 
   return (
-    <nav className="bg-blue-900 p-4" ref={navRef}>
-      <div className="container mx-auto">
-        <div className="flex justify-between">
-          <div className="text-white font-bold">FoodApp</div>
-          <div className="lg:hidden">
-            <button className="text-white" onClick={() => setIsOpen(!isOpen)}>
-              ☰
-            </button>
-          </div>
-          <div
-            className={`${
-              isOpen ? "block" : "hidden"
-            } w-full block flex-grow flex-end  lg:items-center lg:w-auto lg:block mt-2 lg:mt-0 text-white md:bg-transparent z-20`}
-          >
-            <ul className="list-reset lg:flex justify-end flex-1 items-center">
-              <li className="mr-3">
-                <Link
-                  className="inline-block py-2 px-4 text-white no-underline"
-                  to="/"
-                >
-                  Home
-                </Link>
-              </li>
+    <nav className="bg-blue-900 p-4 z-50">
+      <div className="container mx-auto flex justify-between items-center">
+        <div className="text-white font-bold">FoodApp</div>
 
-              <li className="mr-3">
-                <Link
-                  onClick={handleLogout}
-                  className="inline-block text-white no-underline hover:text-gray-200 hover:text-underline py-2 px-4"
-                  to="/"
-                >
-                  Logout
-                </Link>
-              </li>
-            </ul>
-          </div>
+        {/* Desktop Menu */}
+        <div className="hidden lg:block">
+          <ul className="flex space-x-4">
+            <li>
+              <Link className="text-white hover:text-gray-200" to="/">
+                Home
+              </Link>
+            </li>
+            <li>
+              <Link
+                className="text-white hover:text-gray-200"
+                to="/"
+                onClick={handleLogout}
+              >
+                Logout
+              </Link>
+            </li>
+          </ul>
         </div>
+
+        {/* Mobile Menu Icon */}
+        <div className="lg:hidden">
+          <button onClick={() => setIsOpen(!isOpen)}>☰</button>
+        </div>
+      </div>
+
+      {/* Mobile Menu */}
+      <div
+        className={`transition max-h-${
+          isOpen ? "56" : "0"
+        } overflow-hidden lg:hidden`}
+      >
+        <ul className="flex flex-col space-y-2 mt-4">
+          <li>
+            <Link
+              className="text-white hover:text-gray-200 block px-4 py-2"
+              to="/"
+            >
+              Home
+            </Link>
+          </li>
+          <li>
+            <Link
+              className="text-white hover:text-gray-200 block px-4 py-2"
+              to="/"
+              onClick={handleLogout}
+            >
+              Logout
+            </Link>
+          </li>
+        </ul>
       </div>
     </nav>
   );

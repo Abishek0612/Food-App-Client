@@ -7,9 +7,11 @@ import RestaurantRegister from "./components/Forms/RestaurantRegister";
 import CustomerRegister from "./components/Forms/CustomerRegister";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Dashboard from "./components/Restaurant/Dashboard/Dashboard";
+import Dashboard from "./components/Restaurant/DashboardLayout/Dashboard";
 import PrivateNavbar from "./components/Navbar/PrivateNavbar";
 import { useSelector } from "react-redux";
+import ProductDetail from "./components/ProductDetail/ProductDetail";
+import ProtectedRoute from "./ProtectedRoutes/ProtectedRoutes";
 
 function App() {
   const isCustomerAuthenticated = useSelector(
@@ -34,15 +36,23 @@ function App() {
           <PublicNavbar />
         )}
 
-        <Routes >
+        <Routes>
           <Route path="/" element={<HomePage />} />
           <Route
-            path="/restaurantDashboard/:restaurantId"
+            path="/restaurantDashboard/:restaurantId/*"
             element={<Dashboard />}
           />
           <Route path="/login" element={<Login />} />
           <Route path="/restaurant-register" element={<RestaurantRegister />} />
           <Route path="/customer-register" element={<CustomerRegister />} />
+          <Route
+            path="/food-product/:productId"
+            element={
+              <ProtectedRoute>
+                <ProductDetail />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </BrowserRouter>
     </>

@@ -82,15 +82,14 @@ const restaurantSlice = createSlice({
   name: "restaurant",
   initialState: initialRestaurantState,
   reducers: {
-    clearState: (state) => {
-      state.error = null;
+    clearToastNotifications: (state) => {
       state.success = null;
-      state.loading = false;
+      state.error = null;
     },
-    logoutRestaurant:(state) => {
-      state.isAuthenticated= false;
-      state.restaurantAuth.restaurantInfo= null
-    }
+    logoutRestaurant: (state) => {
+      state.isAuthenticated = false;
+      state.restaurantAuth.restaurantInfo = null;
+    },
   },
   extraReducers: (builder) => {
     //Register
@@ -116,7 +115,6 @@ const restaurantSlice = createSlice({
 
       //login
       .addCase(loginRestaurantAction.pending, (state) => {
-        state.isAuthenticated = true;
         state.loading = true;
         state.error = null;
         state.success = null;
@@ -124,8 +122,10 @@ const restaurantSlice = createSlice({
 
       .addCase(loginRestaurantAction.fulfilled, (state, action) => {
         state.restaurantAuth.restaurantInfo = action.payload;
+        state.isAuthenticated = true;
         state.loading = false;
         state.success = action.payload?.message;
+        state.error = null;
       })
 
       .addCase(loginRestaurantAction.rejected, (state, action) => {
@@ -140,4 +140,4 @@ const restaurantSlice = createSlice({
 const restaurantReducer = restaurantSlice.reducer;
 
 export default restaurantReducer;
-export const { logoutRestaurant,clearState } = restaurantSlice.actions;
+export const { logoutRestaurant, clearState } = restaurantSlice.actions;
