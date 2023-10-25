@@ -6,7 +6,6 @@ const initialState = {
   error: null,
   foodProducts: [],
   singleProduct: null,
-
 };
 
 //! All food products of all restaurant displaying in home page
@@ -23,7 +22,6 @@ export const fetchFoodProducts = createAsyncThunk(
     }
   }
 );
-
 
 // Async action for fetching a single food product by ID
 
@@ -62,7 +60,6 @@ const foodProductSlice = createSlice({
         (food) => food._id !== action.payload._id
       );
     },
-  
   },
   extraReducers: (builder) => {
     builder

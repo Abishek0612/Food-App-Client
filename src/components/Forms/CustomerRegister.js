@@ -49,9 +49,6 @@ const CustomerRegister = () => {
         </header>
         <form onSubmit={handleSubmit}>
           <div className="flex items-center mb-4">
-            <span className="material-icons text-slate-400 mr-2 w-10">
-              person
-            </span>
             <input
               className="flex-1 rounded px-3 py-2 border border-gray-300"
               placeholder="Name"
@@ -62,9 +59,6 @@ const CustomerRegister = () => {
             />
           </div>
           <div className="flex items-center mb-4">
-            <span className="material-icons text-slate-400 mr-2 w-10">
-              email
-            </span>
             <input
               className="flex-1 rounded px-3 py-2 border border-gray-300"
               placeholder="Email"
@@ -75,9 +69,6 @@ const CustomerRegister = () => {
             />
           </div>
           <div className="flex items-center mb-4">
-            <span className="material-icons text-slate-400 mr-2 w-10">
-              lock
-            </span>
             <input
               className="flex-1 rounded px-3 py-2 border border-gray-300"
               placeholder="Password"
@@ -89,9 +80,6 @@ const CustomerRegister = () => {
           </div>
 
           <div className="flex items-center mb-4">
-            <span className="material-icons text-slate-400 mr-2 w-10">
-              phone
-            </span>
             <input
               className="flex-1 rounded px-3 py-2 border border-gray-300"
               placeholder="Phone Number"

@@ -56,9 +56,6 @@ const RestaurantRegister = () => {
 
         <form onSubmit={handleSubmit}>
           <div className="flex items-center mb-4">
-            <span className="material-icons text-slate-400 mr-2  w-13 ">
-              restaurant
-            </span>
             <input
               value={formData.restaurantName}
               onChange={(e) =>
@@ -69,9 +66,6 @@ const RestaurantRegister = () => {
             />
           </div>
           <div className="flex items-center mb-4">
-            <span className="material-icons text-slate-400 mr-2  w-13 ">
-              email
-            </span>
             <input
               value={formData.email}
               onChange={(e) =>
@@ -82,9 +76,6 @@ const RestaurantRegister = () => {
             />
           </div>
           <div className="flex items-center mb-4">
-            <span className="material-icons text-slate-400 mr-2  w-13 ">
-              lock
-            </span>
             <input
               value={formData.password}
               onChange={(e) =>
@@ -96,9 +87,6 @@ const RestaurantRegister = () => {
           </div>
 
           <div className="flex items-center mb-4">
-            <span className="material-icons text-slate-400 mr-2 w-13 ">
-              location
-            </span>
             <input
               value={formData.address}
               onChange={(e) =>
@@ -109,9 +97,6 @@ const RestaurantRegister = () => {
             />
           </div>
           <div className="flex items-center mb-4">
-            <span className="material-icons text-slate-400 mr-2 w-13 ">
-              schedule
-            </span>
             <input
               value={formData.openingTime}
               onChange={(e) =>
@@ -122,9 +107,6 @@ const RestaurantRegister = () => {
             />
           </div>
           <div className="flex items-center mb-4">
-            <span className="material-icons text-slate-400 mr-2" w-13 mt-1>
-              time
-            </span>
             <input
               value={formData.closingTime}
               onChange={(e) =>

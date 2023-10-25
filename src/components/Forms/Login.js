@@ -18,8 +18,10 @@ const Login = () => {
     (state) => state?.restaurants?.restaurantAuth
   );
 
-   // Select restaurantId directly from the Redux state
-   const restaurantId = useSelector(state => state.restaurants.restaurantAuth.restaurantInfo?.restaurantId);
+  // Select restaurantId directly from the Redux state
+  const restaurantId = useSelector(
+    (state) => state.restaurants.restaurantAuth.restaurantInfo?.restaurantId
+  );
 
   const authState = userType === "customer" ? "cutomers" : "restaurants";
   const { loading, error, success } = useSelector(
@@ -30,15 +32,14 @@ const Login = () => {
     if (customerAuth.customerInfo) {
       toast.success("Customer Login Successful");
       navigate("/");
-    } else if (restaurantId) { // Check for restaurantId directly
+    } else if (restaurantId) {
+      // Check for restaurantId directly
       toast.success("Restaurant Login Successful");
       navigate(`/restaurantDashboard/${restaurantId}/home`);
-    
     } else if (error) {
       toast.error(error);
     }
-  }, [customerAuth,restaurantId, restaurantAuth, navigate, error]);
-  
+  }, [customerAuth, restaurantId, restaurantAuth, navigate, error]);
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -61,7 +62,6 @@ const Login = () => {
         </header>
 
         <div className="flex items-center mb-4">
-          <span className="material-icons text-slate-400 mr-2">email</span>
           <input
             className="flex-1 rounded px-3 py-2 border border-gray-300"
             placeholder="Email"
@@ -70,7 +70,6 @@ const Login = () => {
           />
         </div>
         <div className="flex items-center mb-4">
-          <span className="material-icons text-slate-400 mr-2">lock</span>
           <input
             className="flex-1 rounded px-3 py-2 border border-gray-300"
             placeholder="Password"

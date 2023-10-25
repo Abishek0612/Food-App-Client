@@ -50,7 +50,7 @@ export const loginCustomerAction = createAsyncThunk(
         "http://localhost:7000/api/v1/customer/login",
         { email, password }
       );
-      
+
       if (data.error) {
         return rejectWithValue(data.error);
       }
@@ -58,7 +58,7 @@ export const loginCustomerAction = createAsyncThunk(
       // Save both the token and customer details to local storage
       localStorage.setItem("customerToken", data.token);
       localStorage.setItem("customerInfo", JSON.stringify(data.customer));
-      
+
       return data;
     } catch (error) {
       return rejectWithValue(
@@ -67,7 +67,6 @@ export const loginCustomerAction = createAsyncThunk(
     }
   }
 );
-
 
 //Slice
 const customerSlice = createSlice({

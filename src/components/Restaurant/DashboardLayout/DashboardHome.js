@@ -31,7 +31,7 @@ const DashboardHome = () => {
             <Typography variant="h5" component="div" gutterBottom>
               Welcome, {restaurantInfo?.restaurantName}
             </Typography>
-          
+
             <Box display="flex" alignItems="center" mt={1}>
               <EmailIcon color="primary" />
               <Typography variant="subtitle1" component="div" ml={2}>
