@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import baseURL from "../../../utils/baseURL";
 
 
 //!Async action to place an order
@@ -9,7 +10,7 @@ export const placeOrder = createAsyncThunk(
     try {
       console.log("Attempting to place order with data:", orderData);
       const response = await axios.post(
-        "http://localhost:7000/api/v1/order/place-order",
+        `${baseURL}/api/v1/order/place-order`,
         orderData
       );
       console.log("Order response:", response.data);

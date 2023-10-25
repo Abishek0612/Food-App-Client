@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import baseURL from "../../../utils/baseURL";
 
 const initialState = {
   loading: false,
@@ -14,7 +15,7 @@ export const fetchFoodProducts = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const { data } = await axios.get(
-        "http://localhost:7000/api/v1/restaurant/get-all-foodproduct"
+        `${baseURL}/api/v1/restaurant/get-all-foodproduct`
       );
       return data;
     } catch (error) {
@@ -31,7 +32,7 @@ export const fetchSingleProduct = createAsyncThunk(
   async (id, { rejectWithValue }) => {
     try {
       const { data } = await axios.get(
-        `http://localhost:7000/api/v1/restaurant/get/food/${id}`
+        `${baseURL}/api/v1/restaurant/get/food/${id}`
       );
       return data;
     } catch (error) {

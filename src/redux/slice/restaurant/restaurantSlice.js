@@ -1,5 +1,6 @@
 import axios from "axios";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import baseURL from "../../../utils/baseURL";
 
 //initialState
 
@@ -33,7 +34,7 @@ export const restaurantRegisterAction = createAsyncThunk(
   ) => {
     try {
       const response = await axios.post(
-        "http://localhost:7000/api/v1/restaurant/register",
+        `${baseURL}/api/v1/restaurant/register`,
         {
           restaurantName,
           email,
@@ -62,10 +63,10 @@ export const loginRestaurantAction = createAsyncThunk(
   "restaurant/login",
   async ({ email, password }, { rejectWithValue }) => {
     try {
-      const { data } = await axios.post(
-        "http://localhost:7000/api/v1/restaurant/login",
-        { email, password }
-      );
+      const { data } = await axios.post(`${baseURL}/api/v1/restaurant/login`, {
+        email,
+        password,
+      });
 
       // Check if data contains an error property
       if (data.error) {
@@ -93,7 +94,7 @@ export const fetchFoodsByRestaurant = createAsyncThunk(
         Authorization: `Bearer ${token}`,
       };
       const { data } = await axios.get(
-        `http://localhost:7000/api/v1/restaurant/get-restaurant-food/${restaurantId}`,
+        `${baseURL}/api/v1/restaurant/get-restaurant-food/${restaurantId}`,
         { headers }
       );
       return data;
@@ -116,7 +117,7 @@ export const addFoodItem = createAsyncThunk(
         Authorization: `Bearer ${token}`,
       };
       const response = await axios.post(
-        "http://localhost:7000/api/v1/restaurant/create/food",
+        `${baseURL}/api/v1/restaurant/create/food`,
         foodData,
         { headers }
       );
@@ -140,7 +141,7 @@ export const updateFoodProduct = createAsyncThunk(
       };
 
       const response = await axios.put(
-        `http://localhost:7000/api/v1/restaurant/update-food/${foodId}`,
+        `${baseURL}/api/v1/restaurant/update-food/${foodId}`,
         updateData,
         { headers }
       );
@@ -164,7 +165,7 @@ export const deleteFoodProduct = createAsyncThunk(
       };
 
       const response = await axios.delete(
-        `http://localhost:7000/api/v1/restaurant/delete-food/${foodId}`,
+        `${baseURL}/api/v1/restaurant/delete-food/${foodId}`,
         { headers }
       );
       return response.data;

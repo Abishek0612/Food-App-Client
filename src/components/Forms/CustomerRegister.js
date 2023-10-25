@@ -21,23 +21,17 @@ const CustomerRegister = () => {
       return;
     }
 
-    try {
       dispatch(registerCustomerAction(formData));
-      // Success or error messages will be handled by NotificationMiddlewear
-      // due to changes in the Redux store
-    } catch (error) {
-      // If you catch any unexpected errors here,
-      // you can handle or display them if needed.
+      window.location.reload()
+      // Reset the form
+      setFormData({
+        name: "",
+        email: "",
+        password: "",
+        phoneNumber: "",
+      });
     }
-
-    // Reset the form
-    setFormData({
-      name: "",
-      email: "",
-      password: "",
-      phoneNumber: "",
-    });
-  };
+  
 
   return (
     <div className="min-h-screen  flex items-center justify-center bg-gradient-to-r from-blue-500 to-slate-500">

@@ -26,7 +26,7 @@ export const registerCustomerAction = createAsyncThunk(
   async ({ name, email, password, phoneNumber }, { rejectWithValue }) => {
     try {
       const { data } = await axios.post(
-        "http://localhost:7000/api/v1/customer/register",
+        "https://food-ordering-api.onrender.com/api/v1/customer/register",
         {
           name,
           email,
@@ -47,7 +47,7 @@ export const loginCustomerAction = createAsyncThunk(
   async ({ email, password }, { rejectWithValue }) => {
     try {
       const { data } = await axios.post(
-        "http://localhost:7000/api/v1/customer/login",
+        "https://food-ordering-api.onrender.com/api/v1/customer/login",
         { email, password }
       );
 
@@ -93,6 +93,7 @@ const customerSlice = createSlice({
       })
 
       .addCase(registerCustomerAction.fulfilled, (state, action) => {
+        console.log(action.payload)
         state.customerAuth.customerInfo = action.payload;
         state.loading = false;
         state.success = "Registration successful!";
