@@ -3,6 +3,7 @@ import restaurantReducer from "../slice/restaurant/restaurantSlice";
 import customerReducer from "../slice/customers/customerSlice";
 import foodProductReducer from "../slice/foodProducts/foodProductsSlice";
 import orderReducer from "../slice/orders/ordersSlice";
+import cartReducer from "../slice/Cart/cartSlice";
 
 //create a store
 const store = configureStore({
@@ -10,9 +11,9 @@ const store = configureStore({
     restaurants: restaurantReducer,
     customers: customerReducer,
     foodProducts: foodProductReducer,
-    orders:orderReducer
+    cart: cartReducer,
+    orders: orderReducer,
   },
-
 });
 
 export default store;

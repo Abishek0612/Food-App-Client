@@ -1,103 +1,136 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
-import {
-  Container,
-  AppBar,
-  Toolbar,
-  Typography,
-  Drawer,
-  List,
-  ListItem,
-  ListItemText,
-  CssBaseline,
-  Box,
-  useMediaQuery,
-  useTheme,
-  IconButton,
-} from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
 import { Link, Routes, Route, Outlet } from "react-router-dom";
-import Orders from "../Orders/Orders";
+import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+import MuiDrawer from "@mui/material/Drawer";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import Divider from "@mui/material/Divider";
+import IconButton from "@mui/material/IconButton";
+import Container from "@mui/material/Container";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import DashboardHome from "./DashboardHome";
+import Orders from "./Orders";
+import FoodTable from "./FoodTable";
+import AddFood from "./AddFood";
 
-const Dashboard = ({ children }) => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const handleDrawerToggle = () => setMobileOpen(!mobileOpen);
-  const restaurantInfo = useSelector(
-    (state) => state?.restaurants?.restaurantAuth?.restaurantInfo
-  );
+// function Copyright(props) {
+//   return (
+//     <Typography
+//       variant="body2"
+//       color="text.secondary"
+//       align="center"
+//       {...props}
+//     >
+//       {"Copyright © "}
+//       <Link color="inherit" href="https://mui.com/">
+//         Your Website
+//       </Link>{" "}
+//       {new Date().getFullYear()}
+//       {"."}
+//     </Typography>
+//   );
+// }
+
+const drawerWidth = 240;
+
+const Drawer = styled(MuiDrawer, {
+  shouldForwardProp: (prop) => prop !== "open",
+})(({ theme, open }) => ({
+  "& .MuiDrawer-paper": {
+    position: "relative",
+    whiteSpace: "nowrap",
+    width: drawerWidth,
+    transition: theme.transitions.create("width", {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+    boxSizing: "border-box",
+    ...(open && {
+      overflowX: "hidden",
+      transition: theme.transitions.create("width", {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen,
+      }),
+      width: theme.spacing(7),
+      [theme.breakpoints.up("sm")]: {
+        width: theme.spacing(9),
+      },
+    }),
+  },
+}));
+
+const defaultTheme = createTheme();
+
+export default function Dashboard() {
+  const [open, setOpen] = useState(true);
+  const toggleDrawer = () => {
+    setOpen(!open);
+  };
 
   return (
-    <Box sx={{ display: "flex", height: "100vh" }}>
-      <CssBaseline />
-      <AppBar
-        position="fixed"
-        sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, mt: 8 }}
-      >
-        <Toolbar>
-          {isMobile && (
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              edge="start"
-              onClick={handleDrawerToggle}
-              sx={{ mr: 2 }}
-            >
-              <MenuIcon />
-            </IconButton>
-          )}
-          <Box
-            display="flex"
-            flexGrow={1}
-            justifyContent="space-between"
-            alignItems="center"
-          >
-            <Typography variant="h6" noWrap component="div">
-              Restaurant Dashboard
-            </Typography>
-            <Typography variant="h6" noWrap component="div" ml={2}>
-              Welcome, {restaurantInfo?.restaurantName}
-            </Typography>
-            <Typography variant="h6" noWrap component="div" ml={2}>
-              Email: {restaurantInfo?.email}
-            </Typography>
-          </Box>
-        </Toolbar>
-      </AppBar>
-      <Drawer
-        variant={isMobile ? "temporary" : "permanent"}
-        open={isMobile ? mobileOpen : true}
-        onClose={handleDrawerToggle}
-        sx={{
-          width: 240,
-          flexShrink: 0,
-          "& .MuiDrawer-paper": { width: 240, boxSizing: "border-box" },
-        }}
-      >
-        <Toolbar />
-        <List>
-          <ListItem button component={Link} to="orders">
-            <ListItemText primary="Orders" />
-          </ListItem>
-        </List>
-      </Drawer>
-      <Box
-        component="main"
-        sx={{ flexGrow: 1, bgcolor: "background.default", p: 3, mt: 8 }}
-      >
-        <Toolbar />
-        <Container>
-          <Routes>
-            <Route path="orders" element={<Orders />} />
-            <Route path="/" element={<div>Dashboard Home</div>} />
-            <Route path="*" element={<div>Not Found</div>} />
-            <Route path="*" element={<Outlet />} />
-          </Routes>
-        </Container>
-      </Box>
-    </Box>
-  );
-};
+    <ThemeProvider theme={defaultTheme}>
+      <Box sx={{ display: "flex" }}>
+        <CssBaseline />
 
-export default Dashboard;
+        <Drawer variant="permanent" open={open}>
+          <Toolbar
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "flex-end",
+              px: [1],
+            }}
+          >
+            <IconButton onClick={toggleDrawer}>
+              <ChevronLeftIcon />
+            </IconButton>
+          </Toolbar>
+          <Divider />
+          <List>
+            <ListItem button component={Link} to="home">
+              <ListItemText primary="Home" />
+            </ListItem>
+            <ListItem button component={Link} to="food-catalog">
+              <ListItemText primary="Food Catalog" />
+            </ListItem>
+            <ListItem button component={Link} to="add-food">
+              <ListItemText primary="Add Food" />
+            </ListItem>
+            <ListItem button component={Link} to="orders">
+              <ListItemText primary="Orders" />
+            </ListItem>
+          </List>
+        </Drawer>
+        <Box
+          component="main"
+          sx={{
+            backgroundColor: (theme) =>
+              theme.palette.mode === "light"
+                ? theme.palette.grey[100]
+                : theme.palette.grey[900],
+            flexGrow: 1,
+            height: "100vh",
+            overflow: "auto",
+          }}
+        >
+          <Toolbar />
+          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+            <Routes>
+              <Route path="/home" element={<DashboardHome />} />
+              <Route path="orders" element={<Orders />} />
+              <Route path="food-catalog" element={<FoodTable />} />
+              <Route path="add-food" element={<AddFood />} />
+              <Route path="*" element={<div>Not Found</div>} />
+              <Route path="*" element={<Outlet />} />
+            </Routes>
+            {/* <Copyright sx={{ pt: 4 }} /> */}
+          </Container>
+        </Box>
+      </Box>
+    </ThemeProvider>
+  );
+}

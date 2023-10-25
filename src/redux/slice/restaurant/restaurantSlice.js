@@ -4,10 +4,14 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 //initialState
 
 const initialRestaurantState = {
-  isAuthenticated: false,
+  isAuthenticated: localStorage.getItem("restaurantInfo") ? true : false,
   loading: false,
   error: null,
   success: null,
+  foods: [], // To store list of food items
+  food: null,
+  foodStatus: "idle", // Status for food operations: idle, pending, success, error
+  foodError: null, // Any error messages related to food operations
   restaurants: [],
   restaurant: null,
   profile: {},
@@ -54,7 +58,6 @@ export const restaurantRegisterAction = createAsyncThunk(
 );
 
 // ! Login Action for Restaurants
-
 export const loginRestaurantAction = createAsyncThunk(
   "restaurant/login",
   async ({ email, password }, { rejectWithValue }) => {
@@ -74,6 +77,99 @@ export const loginRestaurantAction = createAsyncThunk(
       return rejectWithValue(
         error.response ? error.response.data : error.message
       );
+    }
+  }
+);
+
+// !Fetch food products by a specific restaurant
+export const fetchFoodsByRestaurant = createAsyncThunk(
+  "restaurant/fetch-Food-ByRestaurant",
+  async (restaurantId, { rejectWithValue }) => {
+    try {
+      const token = localStorage.getItem("restaurantInfo")
+        ? JSON.parse(localStorage.getItem("restaurantInfo")).token
+        : null;
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
+      const { data } = await axios.get(
+        `http://localhost:7000/api/v1/restaurant/get-restaurant-food/${restaurantId}`,
+        { headers }
+      );
+      return data;
+    } catch (error) {
+      console.error("API Request Error:", error);
+      return rejectWithValue(error.response?.data?.message || error.message);
+    }
+  }
+);
+
+// Async action for adding a food item
+export const addFoodItem = createAsyncThunk(
+  "restaurant/add-food-item",
+  async (foodData, { rejectWithValue }) => {
+    try {
+      const token = localStorage.getItem("restaurantInfo")
+        ? JSON.parse(localStorage.getItem("restaurantInfo")).token
+        : null;
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
+      const response = await axios.post(
+        "http://localhost:7000/api/v1/restaurant/create/food",
+        foodData,
+        { headers }
+      );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || error.message);
+    }
+  }
+);
+
+//! Async action for Updating a food item
+export const updateFoodProduct = createAsyncThunk(
+  "restaurant/update-food-product",
+  async ({ foodId, updateData }, { rejectWithValue }) => {
+    try {
+      const token = localStorage.getItem("restaurantInfo")
+        ? JSON.parse(localStorage.getItem("restaurantInfo")).token
+        : null;
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
+
+      const response = await axios.put(
+        `http://localhost:7000/api/v1/restaurant/update-food/${foodId}`,
+        updateData,
+        { headers }
+      );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data.message || error.message);
+    }
+  }
+);
+
+//? Async action to Delete a food item
+export const deleteFoodProduct = createAsyncThunk(
+  "restaurant/delete-food-product",
+  async ({ foodId }, { rejectWithValue }) => {
+    try {
+      const token = localStorage.getItem("restaurantInfo")
+        ? JSON.parse(localStorage.getItem("restaurantInfo")).token
+        : null;
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
+
+      const response = await axios.delete(
+        `http://localhost:7000/api/v1/restaurant/delete-food/${foodId}`,
+        { headers }
+      );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data.message || error.message);
     }
   }
 );
@@ -133,6 +229,83 @@ const restaurantSlice = createSlice({
           action.payload?.error || action.payload || "An error occurred";
         state.loading = false;
         state.success = null;
+      });
+
+    //!FetchFoodsByRestauran
+    builder
+      .addCase(fetchFoodsByRestaurant.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+
+      .addCase(fetchFoodsByRestaurant.fulfilled, (state, action) => {
+        // console.log("Action Payload:", action.payload);
+        state.foods = action.payload.foodProducts;
+        state.loading = false;
+      })
+      .addCase(fetchFoodsByRestaurant.rejected, (state, action) => {
+        state.error =
+          action.payload?.error || action.payload || "An error occurred";
+        state.loading = false;
+        state.success = null;
+      });
+
+    // ? Adding a food item
+    builder
+      .addCase(addFoodItem.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(addFoodItem.fulfilled, (state, action) => {
+        // console.log(action.payload);
+        state.loading = false;
+        state.food = action.payload;
+      })
+
+      .addCase(addFoodItem.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
+
+    //!  Updating a food item
+    builder
+      .addCase(updateFoodProduct.pending, (state) => {
+        state.loading = true;
+      })
+
+      .addCase(updateFoodProduct.fulfilled, (state, action) => {
+        // console.log(action.payload);
+        state.loading = false;
+        // Find the index of the updated food item in the foods array
+        const index = state.foods.findIndex(
+          (food) => food._id === action.payload.foodProduct._id
+        );
+
+        //  food item exists in the array, updateing it
+        if (index !== -1) {
+          state.foods[index] = action.payload.foodProduct;
+        }
+
+        // using state.food for some purpose, set it to the updated food product
+        state.food = action.payload.foodProduct;
+      })
+      .addCase(updateFoodProduct.rejected, (state, action) => {
+        state.error = action.payload;
+        state.loading = false;
+      });
+
+    // ? Delete food product
+    builder
+      .addCase(deleteFoodProduct.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(deleteFoodProduct.fulfilled, (state, action) => {
+        state.loading = false;
+        // Remove the deleted food from the state
+        state.foods = state.foods.filter((food) => food._id !== action.payload);
+      })
+      .addCase(deleteFoodProduct.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
   },
 });

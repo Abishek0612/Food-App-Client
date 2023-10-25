@@ -18,6 +18,9 @@ const Login = () => {
     (state) => state?.restaurants?.restaurantAuth
   );
 
+   // Select restaurantId directly from the Redux state
+   const restaurantId = useSelector(state => state.restaurants.restaurantAuth.restaurantInfo?.restaurantId);
+
   const authState = userType === "customer" ? "cutomers" : "restaurants";
   const { loading, error, success } = useSelector(
     (state) => state[authState]?.customerAuth || {}
@@ -27,14 +30,14 @@ const Login = () => {
     if (customerAuth.customerInfo) {
       toast.success("Customer Login Successful");
       navigate("/");
-    } else if (restaurantAuth.restaurantInfo) {
+    } else if (restaurantId) { // Check for restaurantId directly
       toast.success("Restaurant Login Successful");
-      navigate(`/restaurantDashboard/${restaurantAuth.restaurantInfo.restaurantId}`);
+      navigate(`/restaurantDashboard/${restaurantId}/home`);
     
     } else if (error) {
       toast.error(error);
     }
-  }, [customerAuth, restaurantAuth, navigate, error]);
+  }, [customerAuth,restaurantId, restaurantAuth, navigate, error]);
   
 
   const handleLogin = (e) => {

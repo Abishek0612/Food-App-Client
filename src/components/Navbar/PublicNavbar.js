@@ -1,30 +1,30 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 
 function PublicNavbar() {
   const [isOpen, setIsOpen] = useState(false);
   const navRef = useRef(null); // reference to the nav element
+  const menuButtonRef = useRef(null);
 
   // Close the navbar if clicked outside
   const handleClickOutside = (event) => {
-    if (navRef.current && !navRef.current.contains(event.target)) {
+    if (
+      navRef.current &&
+      !navRef.current.contains(event.target) &&
+      !menuButtonRef.current.contains(event.target)
+    ) {
       setIsOpen(false);
     }
   };
 
   // Add and remove the event listener based on the navbar's open state
   useEffect(() => {
-    if (isOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-    } else {
-      document.removeEventListener('mousedown', handleClickOutside);
-    }
+    document.addEventListener("mousedown", handleClickOutside);
 
-    // Cleanup the event listener on component unmount
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [isOpen]);
+  }, []);
 
   return (
     <nav className="bg-blue-900 p-4" ref={navRef}>
@@ -32,28 +32,32 @@ function PublicNavbar() {
         <div className="flex justify-between">
           <div className="text-white font-bold">FoodApp</div>
           <div className="lg:hidden">
-            <button className="text-white" onClick={() => setIsOpen(!isOpen)}>
+            <button
+              className="text-white"
+              ref={menuButtonRef}
+              onClick={() => setIsOpen(!isOpen)}
+            >
               ☰
             </button>
           </div>
           <div
             className={`${
-              isOpen ? 'block' : 'hidden'
+              isOpen ? "block" : "hidden"
             } w-full block flex-grow flex-end  lg:items-center lg:w-auto lg:block mt-2 lg:mt-0 text-white md:bg-transparent z-20`}
           >
             <ul className="list-reset lg:flex justify-end flex-1 items-center">
               <li className="mr-3">
                 <Link
                   className="inline-block py-2 px-4 text-white no-underline"
-                  to='/'
+                  to="/"
                 >
-                  Home 
+                  Home
                 </Link>
               </li>
               <li className="mr-3">
                 <Link
                   className="inline-block py-2 px-4 text-white no-underline"
-                  to='/restaurant-register'
+                  to="/restaurant-register"
                 >
                   Restaurant Register
                 </Link>
@@ -61,7 +65,7 @@ function PublicNavbar() {
               <li className="mr-3">
                 <Link
                   className="inline-block text-white no-underline hover:text-gray-200 hover:text-underline py-2 px-4"
-                  to='/customer-register'
+                  to="/customer-register"
                 >
                   Customer Register
                 </Link>
@@ -69,7 +73,7 @@ function PublicNavbar() {
               <li className="mr-3">
                 <Link
                   className="inline-block text-white no-underline hover:text-gray-200 hover:text-underline py-2 px-4"
-                  to='/login'
+                  to="/login"
                 >
                   Login
                 </Link>

@@ -3,7 +3,7 @@ import axios from "axios";
 
 //initialState
 const customerInitialState = {
-  isAuthenticated: false,
+  isAuthenticated: localStorage.getItem("customerInfo") ? true : false,
   error: null,
   success: null,
 
@@ -50,11 +50,15 @@ export const loginCustomerAction = createAsyncThunk(
         "http://localhost:7000/api/v1/customer/login",
         { email, password }
       );
-      // Check if data contains an error property
+      
       if (data.error) {
         return rejectWithValue(data.error);
       }
-      localStorage.setItem("customerInfo", JSON.stringify(data));
+
+      // Save both the token and customer details to local storage
+      localStorage.setItem("customerToken", data.token);
+      localStorage.setItem("customerInfo", JSON.stringify(data.customer));
+      
       return data;
     } catch (error) {
       return rejectWithValue(
@@ -63,6 +67,7 @@ export const loginCustomerAction = createAsyncThunk(
     }
   }
 );
+
 
 //Slice
 const customerSlice = createSlice({
@@ -110,7 +115,8 @@ const customerSlice = createSlice({
       })
 
       .addCase(loginCustomerAction.fulfilled, (state, action) => {
-        state.customerAuth.customerInfo = action.payload;
+        state.customerAuth.token = action.payload.token;
+        state.customerAuth.customerInfo = action.payload.customer;
         state.isAuthenticated = true;
         state.loading = false;
         state.success = "Login successful!";

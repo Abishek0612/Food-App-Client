@@ -14,21 +14,19 @@ const RestaurantRegister = () => {
   });
 
   const dispatch = useDispatch();
-  const restaurantState = useSelector(state => state.restaurants?.restaurantAuth);
-
-
+  const restaurantState = useSelector(
+    (state) => state.restaurants?.restaurantAuth
+  );
 
   useEffect(() => {
     if (restaurantState.error) {
       toast.error(restaurantState.error.message);
     }
-    
+
     if (restaurantState.restaurantInfo) {
-        toast.success("Restaurant registration successful!");
+      toast.success("Restaurant registration successful!");
     }
-}, [restaurantState]);
-
-
+  }, [restaurantState]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -37,17 +35,15 @@ const RestaurantRegister = () => {
       return;
     }
     dispatch(restaurantRegisterAction(formData));
+    setFormData({
+      restaurantName: "",
+      email: "",
+      password: "",
+      address: "",
+      openingTime: "",
+      closingTime: "",
+    });
   };
-  
-
-    // setFormData({
-    //   restaurantName: "",
-    //   email: "",
-    //   password: "",
-    //   address: "",
-    //   openingTime: "",
-    //   closingTime: "",
-    // });
 
   return (
     <div className="min-h-screen  flex items-center justify-center bg-gradient-to-r from-blue-500 to-slate-500">
