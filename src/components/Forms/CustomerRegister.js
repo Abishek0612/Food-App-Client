@@ -17,21 +17,29 @@ const CustomerRegister = () => {
     e.preventDefault();
 
     if (!formData.name || !formData.email || !formData.password) {
-      toast.error("Please fill in all required fields."); // This will show a toast immediately
+      toast.error("Please fill in all required fields.");
       return;
     }
 
-      dispatch(registerCustomerAction(formData));
-      window.location.reload()
-      // Reset the form
-      setFormData({
-        name: "",
-        email: "",
-        password: "",
-        phoneNumber: "",
+    dispatch(registerCustomerAction(formData))
+      .then(response => {
+
+        window.location.reload();
+      })
+      .catch(error => {
+        toast.error("An error occurred while registering.");
+      })
+      .finally(() => {
+        // Reset the form regardless of success or error
+        setFormData({
+          name: "",
+          email: "",
+          password: "",
+          phoneNumber: "",
+        });
       });
-    }
-  
+};
+
 
   return (
     <div className="min-h-screen  flex items-center justify-center bg-gradient-to-r from-blue-500 to-slate-500">
