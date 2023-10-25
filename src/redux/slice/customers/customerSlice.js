@@ -93,7 +93,7 @@ const customerSlice = createSlice({
       })
 
       .addCase(registerCustomerAction.fulfilled, (state, action) => {
-        console.log(action.payload)
+        // console.log(action.payload)
         state.customerAuth.customerInfo = action.payload;
         state.loading = false;
         state.success = "Registration successful!";
