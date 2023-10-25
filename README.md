@@ -52,4 +52,4 @@ customer email :abi@gmail.com , pw: abi123  ,
 
 Restaurant email : bay@gmail.com , pw :abi123 
 
-Deployed url :
+Deployed url :  'https://soft-smakager-d9eed0.netlify.app/'
