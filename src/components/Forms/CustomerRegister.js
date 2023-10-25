@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { registerCustomerAction } from "../../redux/slice/customers/customerSlice";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const CustomerRegister = () => {
   const [formData, setFormData] = useState({
@@ -12,6 +13,7 @@ const CustomerRegister = () => {
   });
 
   const dispatch = useDispatch();
+  const navigate = useNavigate(); 
 
   const handleSubmit =async (e) => {
     e.preventDefault();
