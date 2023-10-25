@@ -44,3 +44,12 @@ MongoDB set up and running.
 
 
 To run the App : npm start
+
+
+Credentials for login :
+
+customer email :abi@gmail.com , pw: abi123  ,
+
+Restaurant email : bay@gmail.com , pw :abi123 
+
+Deployed url :
