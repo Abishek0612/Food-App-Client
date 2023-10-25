@@ -13,33 +13,32 @@ const CustomerRegister = () => {
 
   const dispatch = useDispatch();
 
-  const handleSubmit = (e) => {
+  const handleSubmit =async (e) => {
     e.preventDefault();
 
     if (!formData.name || !formData.email || !formData.password) {
-      toast.error("Please fill in all required fields.");
+      toast.error("Please fill in all required fields."); // This will show a toast immediately
       return;
     }
 
-    dispatch(registerCustomerAction(formData))
-      .then(response => {
+    try {
+    await  dispatch(registerCustomerAction(formData));
+    navigate('/login')
+      // Success or error messages will be handled by NotificationMiddlewear
+      // due to changes in the Redux store
+    } catch (error) {
+      // If you catch any unexpected errors here,
+      // you can handle or display them if needed.
+    }
 
-        window.location.reload();
-      })
-      .catch(error => {
-        toast.error("An error occurred while registering.");
-      })
-      .finally(() => {
-        // Reset the form regardless of success or error
-        setFormData({
-          name: "",
-          email: "",
-          password: "",
-          phoneNumber: "",
-        });
-      });
-};
-
+    // Reset the form
+    setFormData({
+      name: "",
+      email: "",
+      password: "",
+      phoneNumber: "",
+    });
+  };
 
   return (
     <div className="min-h-screen  flex items-center justify-center bg-gradient-to-r from-blue-500 to-slate-500">
