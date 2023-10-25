@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import baseURL from "../../../utils/baseURL";
 
 //initialState
 const customerInitialState = {
@@ -26,7 +27,7 @@ export const registerCustomerAction = createAsyncThunk(
   async ({ name, email, password, phoneNumber }, { rejectWithValue }) => {
     try {
       const { data } = await axios.post(
-        "https://food-ordering-api.onrender.com/api/v1/customer/register",
+        `${baseURL}/api/v1/customer/register`,
         {
           name,
           email,
@@ -47,7 +48,7 @@ export const loginCustomerAction = createAsyncThunk(
   async ({ email, password }, { rejectWithValue }) => {
     try {
       const { data } = await axios.post(
-        "https://food-ordering-api.onrender.com/api/v1/customer/login",
+        `${baseURL}/api/v1/customer/login`,
         { email, password }
       );
 
