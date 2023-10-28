@@ -1,8 +1,11 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { registerCustomerAction } from "../../redux/slice/customers/customerSlice";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  clearToastNotifications,
+  registerCustomerAction,
+} from "../../redux/slice/customers/customerSlice";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 const CustomerRegister = () => {
   const [formData, setFormData] = useState({
@@ -11,29 +14,35 @@ const CustomerRegister = () => {
     password: "",
     phoneNumber: "",
   });
-
   const dispatch = useDispatch();
-  const navigate = useNavigate(); 
 
-  const handleSubmit =async (e) => {
+  const customerState = useSelector((state) => state?.customers?.customerAuth);
+
+  useEffect(() => {
+    if (customerState.error) {
+      toast.error(customerState.error);
+      dispatch(clearToastNotifications()); // Clear the error after displaying it
+    }
+  
+    if (customerState.customerInfo) {
+      toast.success("Restaurant registration successful!");
+    }
+  }, [customerState]);
+  ;
+
+  // const navigate = useNavigate();
+
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     if (!formData.name || !formData.email || !formData.password) {
-      toast.error("Please fill in all required fields."); // This will show a toast immediately
+      toast.error("Please fill in all required fields.");
       return;
     }
 
-    try {
-    await  dispatch(registerCustomerAction(formData));
-    navigate('/login')
-      // Success or error messages will be handled by NotificationMiddlewear
-      // due to changes in the Redux store
-    } catch (error) {
-      // If you catch any unexpected errors here,
-      // you can handle or display them if needed.
-    }
+    dispatch(registerCustomerAction(formData));
+    // toast.success("Customer Registration Successful");
 
-    // Reset the form
     setFormData({
       name: "",
       email: "",

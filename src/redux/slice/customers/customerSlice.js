@@ -37,7 +37,8 @@ export const registerCustomerAction = createAsyncThunk(
       );
       return data;
     } catch (error) {
-      rejectWithValue(error?.message?.data);
+      rejectWithValue(error.response?.data?.error || error.message);
+
     }
   }
 );
@@ -101,8 +102,7 @@ const customerSlice = createSlice({
         state.error = null;
       })
       .addCase(registerCustomerAction.rejected, (state, action) => {
-        state.error =
-          action.payload?.error || action.payload || "An error occurred";
+        state.error = action.payload?.error || action.payload || "An error occurred";
         state.loading = false;
         state.success = null;
       });
