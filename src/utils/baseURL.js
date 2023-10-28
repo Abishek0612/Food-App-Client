@@ -1,3 +1,3 @@
-const baseURL = "https://food-ordering-api.onrender.com"
+const baseURL = "https://food-api-msdz.onrender.com"
 
 export default baseURL
